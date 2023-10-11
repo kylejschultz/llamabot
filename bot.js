@@ -19,9 +19,9 @@ const logger = pino({
     }
 })  
 
-/**************************************/
-/* Bot Setup and Command Registration */
-/**************************************/
+/********************************************/
+/* Bot Setup and Slash Command Registration */
+/********************************************/
 const bot = new Client({ intents: [GatewayIntentBits.Guilds] });
 bot.commands = new Collection();
 const foldersPath = path.join(__dirname, 'commands');
@@ -42,44 +42,29 @@ for (const folder of commandFolders) {
 	}
 }
 
+/************************************/
+/* Bot Events and Util Registration */
+/************************************/
+const eventsPath = path.join(__dirname, 'events');
+const eventFiles = fs.readdirSync(eventsPath).filter(file => file.endsWith('.js'));
 
-/**************/
-/* Bot Events */
-/**************/
-bot.on(Events.InteractionCreate, async interaction => {
-	if (!interaction.isChatInputCommand()) return;
-	const command = interaction.client.commands.get(interaction.commandName);
-
-	if (!command) {
-		logger.error(`No command matching ${interaction.commandName} was found.`);
-		return;
+for (const file of eventFiles) {
+	const filePath = path.join(eventsPath, file);
+	const event = require(filePath);
+	if (event.once) {
+		bot.once(event.name, (...args) => event.execute(...args));
+	} else {
+		bot.on(event.name, (...args) => event.execute(...args));
 	}
+}
 
-	try {
-		await command.execute(interaction);
-	} catch (error) {
-		logger.error(error);
-		if (interaction.replied || interaction.deferred) {
-			await interaction.followUp({ content: 'There was an error while executing this command!', ephemeral: true });
-		} else {
-			await interaction.reply({ content: 'There was an error while executing this command!', ephemeral: true });
-		}
-	}
-});
-
-bot.on('ready', () => {
-    const link = bot.generateInvite({
-        permissions: [
-            PermissionFlagsBits.Administrator
-        ],
-        scopes: [OAuth2Scopes.Bot],
-    });
-    const Guilds = bot.guilds.cache.map(guild => guild.name);
-    logger.info('============================')
-    logger.info(`Logged in as ${bot.user.tag}!`);
-    logger.info(`Use this invite link to join the server: ${link}`);
-    logger.info('Current Guilds: ' + Guilds.join(', '));
-});
+const utilsPath = path.join(__dirname, 'utils');
+const utilFiles = fs.readdirSync(utilsPath).filter(file => file.endsWith('.js'));
+for (const file of utilFiles) {
+	const filePath = path.join(utilsPath, file);
+	const util = require(filePath);
+	bot[util.name] = util;
+}
   
 /* Bot Login */
 bot.login(process.env.DISCORD_BOT_TOKEN);
