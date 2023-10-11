@@ -76,7 +76,5 @@ module.exports = {
             default:
                 await interaction.reply("No subcommand found.");
         }
-        
-
-	},
+    }
 };
