@@ -1,6 +1,6 @@
 # Llama Bot
 
-Llama Bot is a Discord bot that generates text based on user input using an Ollama LLM instance. I'm testing a variety of models, and this is mostly being used as an interface to interact with my lab instance..
+Llama Bot is a Discord bot that generates text based on user input using an Ollama LLM instance. I'm testing a variety of models, and this is mostly being used as an interface to interact with my lab instance and to learn how to better interact with LLMs using LangChain.
 
 ## Installation
 ### Requirements
@@ -17,7 +17,7 @@ Llama Bot is a Discord bot that generates text based on user input using an Olla
 8. Scroll down to the "TOKEN" section and keep it aside for the next step.
 
 ### Deploy LlamaBot
-1. Clone the repository
+1. Clone the repository and move into the new folder
 2. Install the required packages using `npm install llama.js`
 3. Create a `.env` file in the root directory of the project and add the following variables to the `.env` file in a `key=value` format.
     | Variable | Description | Default Value |
@@ -27,7 +27,9 @@ Llama Bot is a Discord bot that generates text based on user input using an Olla
     | DISCORD_COMMAND_PREFIX | The prefix you'd like to use for commands. | ! |
     | LLAMA_URL | The URL of the Llama API | http://localhost:11434 |
     | LLAMA_MODEL | The name of the Llama model to use | llama2:latest |
+    | LOG_LEVEL | Log level used by the Logger package | info |
 
 ## Usage
-1. Start the bot using `node llama.js`
-2. In Discord, use the `!ll` command followed by your message to generate text
+1. Start the bot using `node llama.py`
+2. Register slash commands by running `node deploy-commands.js`
+3. Enter a `/` in the Discord chat window to show available commands. 
