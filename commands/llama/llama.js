@@ -54,7 +54,6 @@ module.exports = {
                     type: ChannelType.GuildText,
                     parent: process.env.DISCORD_CATEGORY
                 });
-                console.log(newChannel);
                 await interaction.editReply("Created new channel: " + interaction.guild.channels.cache.get(newChannel.id).toString());
                 break;
             default:
