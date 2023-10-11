@@ -30,6 +30,6 @@ Llama Bot is a Discord bot that generates text based on user input using an Olla
     | LOG_LEVEL | Log level used by the Logger package | info |
 
 ## Usage
-1. Start the bot using `node llama.py`
+1. Start the bot using `node bot.py`
 2. Register slash commands by running `node deploy-commands.js`
 3. Enter a `/` in the Discord chat window to show available commands. 
