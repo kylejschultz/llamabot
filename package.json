@@ -1,0 +1,20 @@
+{
+  "dependencies": {
+    "discord.js": "^14.13.0",
+    "dotenv": "^16.3.1",
+    "langchain": "^0.0.165",
+    "pino": "^8.16.0",
+    "pino-pretty": "^10.2.3",
+    "pretty": "^2.0.0"
+  },
+  "name": "llamajava",
+  "description": "Llama Bot is a Discord bot that generates text based on user input using an Ollama LLM instance. I'm testing a variety of models, and this is mostly being used as an interface to interact with my lab instance..",
+  "version": "1.0.0",
+  "main": "llama.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
