@@ -65,6 +65,6 @@ for (const file of utilFiles) {
 	const util = require(filePath);
 	bot[util.name] = util;
 }
-  
+
 /* Bot Login */
 bot.login(process.env.DISCORD_BOT_TOKEN);

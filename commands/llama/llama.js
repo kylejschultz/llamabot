@@ -5,11 +5,7 @@ const { ChatOllama }  = require("langchain/chat_models/ollama");
 const { StringOutputParser } = require("langchain/schema/output_parser");
 require('dotenv').config();
 
-
-
 module.exports = {
-    
-    
     data: new SlashCommandBuilder()
         .setName('llama')
         .setDescription('Interact with the Llama.')
@@ -57,16 +53,35 @@ module.exports = {
                     chunks.push(chunk);
                 }
                 reply = chunks.join("");
-                await interaction.editReply(reply);
+                if (reply.length > 2000) {
+                    const chunks = [];
+                    let index = 0;
+                    while (index < messageContent.length) {
+                    const chunk = messageContent.slice(index, Math.min(index + maxCharacters, messageContent.length));
+                    chunks.push(chunk);
+                    index += maxCharacters;
+                    }
+
+                    for (const chunk of chunks) {
+                        await interaction.channel.send(chunk);
+                    }
+                } else{
+                    await interaction.editReply(reply);
+                }
                 break;
             case 'new':
                 await interaction.deferReply();
-                newChannel = await interaction.guild.channels.create({
-                    name: "llama-" + interaction.options.getString('topic'),
-                    type: ChannelType.GuildText,
-                    parent: process.env.DISCORD_CATEGORY
+                const channel = interaction.channel;
+                const user = interaction.user;
+                const thread = await channel.threads.create({
+                    name: interaction.options.getString('topic'),
+                    autoArchiveDuration: 10080,
+                    reason: "Llama Chat"
                 });
-                await interaction.editReply("Created new channel: " + interaction.guild.channels.cache.get(newChannel.id).toString());
+                await interaction.editReply('Thread created. Adding you, then summoning the Llama...');
+                await thread.members.add(user);
+                if (thread.joinable) await thread.join();
+                await interaction.editReply('Llama summoned. You may now chat with the Llama.');
                 break;
             case 'delete':
                 await interaction.deferReply();
