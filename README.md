@@ -27,6 +27,7 @@ Llama Bot is a Discord bot that generates text based on user input using an Olla
     | DISCORD_COMMAND_PREFIX | The prefix you'd like to use for commands. | ! |
     | LLAMA_URL | The URL of the Llama API | http://localhost:11434 |
     | LLAMA_MODEL | The name of the Llama model to use | llama2:latest |
+    | REDIS_URL | URL to Redis instance that will keep conversational memory | N/A |
     | LOG_LEVEL | Log level used by the Logger package | info |
 
 ## Usage
