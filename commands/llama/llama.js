@@ -69,6 +69,7 @@ module.exports = {
                     await interaction.editReply(reply);
                 }
                 break;
+            
             case 'new':
                 await interaction.deferReply();
                 const channel = interaction.channel;
@@ -83,6 +84,7 @@ module.exports = {
                 if (thread.joinable) await thread.join();
                 await interaction.editReply('Llama summoned. You may now chat with the Llama.');
                 break;
+            
             case 'delete':
                 await interaction.deferReply();
                 await interaction.guild.channels.cache.get(interaction.options.getString('channel')).delete();

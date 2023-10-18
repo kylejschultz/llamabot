@@ -14,7 +14,7 @@ module.exports = {
         const Guilds = bot.guilds.cache.map(guild => guild.name);
         logger.info('============================')
         logger.info(`Logged in as ${bot.user.tag}!`);
-        logger.info(`Use this invite link to join the server: ${link}`);
-        logger.info('Current Guilds: ' + Guilds.join(', '));
+        //logger.info(`Use this invite link to join the server: ${link}`);
+        //logger.info('Current Guilds: ' + Guilds.join(', '));
     },
 };

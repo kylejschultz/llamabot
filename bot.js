@@ -6,23 +6,31 @@ const path = require('node:path');
 const { Client, Collection, Events, GatewayIntentBits, PermissionFlagsBits, OAuth2Scopes } = require('discord.js');
 require('dotenv').config();
 
-/*****************/
-/* Logging Setup */
-/*****************/
+
+/****************/
+/* Logger Setup */
+/****************/
 const pino = require('pino');
 const logger = pino({
+    level: process.env.LOG_LEVEL || 'info',
     transport: {
         target: 'pino-pretty',
         options: {
             colorize: true
         }
     }
-})  
+}) 
 
 /********************************************/
 /* Bot Setup and Slash Command Registration */
 /********************************************/
-const bot = new Client({ intents: [GatewayIntentBits.Guilds] });
+const bot = new Client({
+	intents: [
+		GatewayIntentBits.Guilds,
+		GatewayIntentBits.GuildMessages,
+		GatewayIntentBits.MessageContent,
+		GatewayIntentBits.GuildMembers]
+ });
 bot.commands = new Collection();
 const foldersPath = path.join(__dirname, 'commands');
 const commandFolders = fs.readdirSync(foldersPath);
@@ -58,13 +66,6 @@ for (const file of eventFiles) {
 	}
 }
 
-const utilsPath = path.join(__dirname, 'utils');
-const utilFiles = fs.readdirSync(utilsPath).filter(file => file.endsWith('.js'));
-for (const file of utilFiles) {
-	const filePath = path.join(utilsPath, file);
-	const util = require(filePath);
-	bot[util.name] = util;
-}
 
 /* Bot Login */
 bot.login(process.env.DISCORD_BOT_TOKEN);
